@@ -1,13 +1,10 @@
-// Paste the values from Firebase Console > Project settings > Your apps > Web app.
-// These web keys are public identifiers, NOT secrets. Security comes from firestore.rules, storage.rules and App Check.
-// NEVER paste service-account JSON or private keys here.
-export default {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
+// Replace these placeholders with the web configuration from Alok's NEW Firebase project.
+// Never put service-account credentials or private keys in this file.
+export const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_WEB_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
   projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  // App Check (reCAPTCHA v3 site key). Leave "" until you register it.
-  appCheckSiteKey: ""
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_FIREBASE_APP_ID"
 };

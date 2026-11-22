@@ -5,44 +5,32 @@ service cloud.firestore {
       return request.auth != null &&
         exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
-    function str(v, min, max) { return v is string && v.size() >= min && v.size() <= max; }
-    function validBooking(d) {
-      return d.keys().hasOnly(['name','phone','email','company','location','equipmentType','brand','model',
-                 'capacity','problem','preferredDate','preferredTime','photoPath','status','createdAt'])
-        && d.keys().hasAll(['name','phone','location','equipmentType','problem','status','createdAt'])
-        && str(d.name,2,80) && str(d.phone,7,20) && str(d.location,2,200)
-        && str(d.equipmentType,2,80) && str(d.problem,5,2000)
-        && (!('email' in d) || str(d.email,0,120))
-        && (!('company' in d) || str(d.company,0,120))
-        && (!('brand' in d) || str(d.brand,0,80))
-        && (!('model' in d) || str(d.model,0,80))
-        && (!('capacity' in d) || str(d.capacity,0,40))
-        && (!('preferredDate' in d) || str(d.preferredDate,0,10))
-        && (!('preferredTime' in d) || str(d.preferredTime,0,40))
-        && (!('photoPath' in d) || str(d.photoPath,0,200))
-        && d.status == 'New' && d.createdAt == request.time;
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false; // Add the first admin document through Firebase Console only.
     }
-    // Admin list: create a document here by hand (see FIREBASE-SETUP.md). Nobody can write it from the web.
-    match /admins/{uid} { allow read: if request.auth != null && request.auth.uid == uid; allow write: if false; }
-
-    match /bookings/{id} {
-      allow create: if validBooking(request.resource.data);
+    match /bookings/{bookingId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          'name','phone','company','location','equipment','model','date','issue','status','createdAt'
+        ])
+        && request.resource.data.name is string && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 100
+        && request.resource.data.phone is string && request.resource.data.phone.size() >= 8 && request.resource.data.phone.size() <= 20
+        && request.resource.data.location is string && request.resource.data.location.size() >= 2 && request.resource.data.location.size() <= 120
+        && request.resource.data.equipment is string && request.resource.data.equipment.size() <= 100
+        && request.resource.data.issue is string && request.resource.data.issue.size() >= 5 && request.resource.data.issue.size() <= 2000
+        && request.resource.data.status == 'New';
       allow read, update, delete: if isAdmin();
     }
-    match /projects/{id} {
+    match /projects/{projectId} {
       allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+    match /customers/{customerId} {
+      allow read, write: if isAdmin();
+    }
+    match /siteContent/{docId} {
+      allow read: if true;
       allow write: if isAdmin();
-      match /private/{doc} { allow read, write: if isAdmin(); }
     }
-    match /reviews/{id} {
-      allow create: if request.resource.data.keys().hasOnly(['name','rating','comment','approved','createdAt'])
-        && str(request.resource.data.name,2,60) && str(request.resource.data.comment,5,600)
-        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
-        && request.resource.data.approved == false && request.resource.data.createdAt == request.time;
-      allow read: if resource.data.approved == true || isAdmin();
-      allow update, delete: if isAdmin();
-    }
-    match /settings/{doc} { allow read: if true; allow write: if isAdmin(); }
-    match /{other=**} { allow read, write: if false; }
   }
 }

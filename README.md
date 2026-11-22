@@ -1,29 +1,39 @@
-# Alok — Weighing Scale Expert (portfolio + installable PWA)
+# Alok — Weighing Scale Expert & Technical Consultant
 
-Static site (HTML/CSS/JS, no build step) for GitHub Pages, with an optional Firebase backend for bookings and an admin dashboard.
+A responsive personal portfolio and installable PWA, designed using the modular, mobile-first spirit of the supplied Nanu Cart project: separate HTML, CSS and JavaScript, a glassy sticky header, rounded cards, clear section hierarchy and a mobile quick-action bar. The visual identity is deliberately distinct: midnight navy, technical blue, warm white and restrained brass accents.
 
-## Structure
-- `index.html`, `offline.html`, `404.html` — public pages
-- `assets/css/style.css`, `assets/js/main.js` (page + booking), `assets/js/fb.js` (loads Firebase only when enabled)
-- `assets/images/alok-hero.jpg` — **hero photo. To change it, replace this file with another JPG of the same name.**
-- `admin/` — admin dashboard (sign-in required, not indexed)
-- `config/site-config.js` — WhatsApp number, **demo email**, feature switches, optional EmailJS keys
-- `config/firebase-config.example.js` — copy to `firebase-config.js`
-- `firebase/firestore.rules`, `firebase/storage.rules` — paste into Firebase Console
-- `manifest.webmanifest`, `sw.js`, `assets/icons/` — PWA
+## Included
+- `index.html` — public portfolio and service enquiry form.
+- `style.css` — complete responsive visual theme.
+- `app.js` — navigation, WhatsApp enquiry hand-off and install prompt.
+- `alok-portrait.png` — supplied real portrait.
+- `manifest.webmanifest`, `sw.js`, `offline.html` — PWA installation and offline shell.
+- `admin.html` — Firebase email/password sign-in, booking list/status changes and text project publishing controls.
+- `` — Firestore and Storage rules.
+- `firebase-config.example.js` — Firebase configuration template.
 
-## What works without any setup
-Full public site, WhatsApp buttons (+91 86605 81728, pre-filled message), call/email links, install-to-home-screen, offline page. The booking form validates, and “Send via WhatsApp” works. “Submit enquiry” says honestly that online saving is not set up until you finish `FIREBASE-SETUP.md`.
+## Deploy on GitHub Pages (Android-friendly)
+1. Extract the ZIP on your phone.
+2. Create a new GitHub repository, for example `alok-portfolio`.
+3. Upload the **contents** of the `alok-portfolio` folder to the repository root (so `index.html` is at the root, not nested one folder deeper).
+4. In repository Settings → Pages, choose Deploy from a branch, select `main` and `/ (root)`, then Save.
+5. Wait for GitHub Pages to publish. Open the HTTPS URL.
+6. In Android Chrome, open the site menu and choose **Install app** or **Add to Home screen** when offered.
 
-## Still needs you
-1. Replace `hello@example.com` in `config/site-config.js` and set `emailIsDemo: false`.
-2. Create a new Firebase project (FIREBASE-SETUP.md).
-3. Optional: EmailJS keys for email alerts; App Check key.
-4. Publish real field-work projects and customer logos (with permission) from the admin.
+The manifest and service-worker use relative paths and `./` scope so a GitHub Pages project subpath can work. If you rename the repository or deploy under a different path, retest the manifest and offline caching.
 
-## PWA notes
-- Needs HTTPS (GitHub Pages provides it). On Android Chrome: menu ⋮ → **Install app** (or the “Install app” button on the site).
-- After changing files, edit `VERSION` in `sw.js` (v1 → v2) so visitors get the update.
-- Private data is never cached: the service worker ignores `/admin/` and all Firebase/EmailJS requests.
-- Troubleshooting: if changes don’t appear, bump `VERSION`, then close and reopen the app. If “Install” is missing, check you are on HTTPS and the icons load.
-- Push notifications are **not** implemented.
+## Firebase
+Read `FIREBASE-SETUP.md` before enabling the admin dashboard. It must use a brand-new Firebase project separate from Nanu Cart. The Firebase config file is included with placeholders; replace them with the web config from your new project. Never commit private service-account keys.
+
+## Important current limitations
+- The public form currently creates a WhatsApp message; it does not claim to persist the enquiry to Firebase. Follow the Firebase setup guide to wire a secure Firestore write and App Check.
+- The admin starter supports email/password login, booking status updates and text-only project entries. Photo upload UI, email automation and automatic WhatsApp notifications are not configured.
+- `hello@example.com` is not displayed as a working contact email. No email was supplied.
+- The service project gallery is intentionally empty until real, approved work is added.
+- No fake client logos, testimonials, certifications or project records are included.
+- Contech Scale Company is mentioned only as current employment, with a personal-portfolio disclaimer. This is not an official company website or endorsement.
+
+## Change details
+- WhatsApp number and hero copy: `index.html` and `app.js`.
+- Hero photo: replace `alok-portrait.png` while keeping the same filename, or update its path in `index.html` and `sw.js`.
+- Colours and complete theme: `style.css`.

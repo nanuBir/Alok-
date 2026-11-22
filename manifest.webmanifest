@@ -1,19 +1,16 @@
 {
+  "id": "./",
   "name": "Alok — Weighing Scale Expert",
   "short_name": "Alok",
-  "description": "Weighing scale troubleshooting, calibration, installation and repair in Bengaluru and Udupi.",
-  "id": "./",
-  "start_url": "./?source=pwa",
+  "description": "Personal professional portfolio of Alok, Weighing Scale Expert & Technical Consultant.",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0e1a2b",
-  "theme_color": "#0e1a2b",
-  "lang": "en-IN",
+  "orientation": "portrait-primary",
+  "background_color": "#07152e",
+  "theme_color": "#07152e",
   "icons": [
-    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
-  ],
-  "shortcuts": [{"name": "Book a service", "url": "./#book"}]
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
 }
