@@ -1,11 +1,11 @@
-import { getFirebase } from '../assets/js/fb.js';
+import { getFirebase } from './fb.js';
 const S = window.SITE, app = document.getElementById('app'), $ = (s, r = app) => r.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const STATUS = ['New', 'Contacted', 'Scheduled', 'In Progress', 'Completed', 'Cancelled'];
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('../sw.js').catch(() => {});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 
-if (!S.firebaseEnabled) { app.innerHTML = '<h2>Firebase is not set up yet</h2><p>Follow FIREBASE-SETUP.md, create config/firebase-config.js, then set <code>firebaseEnabled: true</code> in config/site-config.js.</p>'; }
-else boot().catch(e => { console.warn(e); app.innerHTML = '<h2>Could not start</h2><p>Check config/firebase-config.js and your connection.</p>'; });
+if (!S.firebaseEnabled) { app.innerHTML = '<h2>Firebase is not set up yet</h2><p>Follow SETUP-GUIDE.md, create firebase-config.js, then set <code>firebaseEnabled: true</code> in site-config.js.</p>'; }
+else boot().catch(e => { console.warn(e); app.innerHTML = '<h2>Could not start</h2><p>Check firebase-config.js and your connection.</p>'; });
 
 async function boot() {
   const F = await getFirebase(), { fs, st, au, db, storage, auth } = F;
@@ -14,7 +14,7 @@ async function boot() {
     $('#out', document).hidden = !u;
     if (!u) return login();
     const a = await fs.getDoc(fs.doc(db, 'admins', u.uid)).catch(() => null);
-    if (!a || !a.exists()) { app.innerHTML = '<h2>No access</h2><p>This account is not an administrator. See FIREBASE-SETUP.md step 6.</p>'; return; }
+    if (!a || !a.exists()) { app.innerHTML = '<h2>No access</h2><p>This account is not an administrator. See SETUP-GUIDE.md step 6.</p>'; return; }
     shell();
   });
   function login() {
@@ -23,7 +23,7 @@ async function boot() {
   }
   function shell() {
     app.innerHTML = '<div class="tabs" role="tablist"></div><div id="pane"></div>';
-    const tabs = { Bookings: bookings, Projects: projects, Logos: logos }, t = $('.tabs');
+    const tabs = { Bookings: bookings, Projects: projects, Reviews: reviews, Logos: logos }, t = $('.tabs');
     Object.keys(tabs).forEach((k, i) => { const b = document.createElement('button'); b.textContent = k; b.role = 'tab'; b.onclick = () => { t.querySelectorAll('button').forEach(x => x.setAttribute('aria-selected', x === b)); tabs[k](); }; t.append(b); if (!i) b.click(); });
   }
   const pane = () => $('#pane'), toast = m => { const p = document.createElement('p'); p.className = 'msg'; p.textContent = m; pane().prepend(p); setTimeout(() => p.remove(), 3000); };
@@ -74,6 +74,12 @@ async function boot() {
         projects();
       } catch (x) { $('#pe').textContent = x.message || 'Could not save.'; }
     };
+  }
+  async function reviews() {
+    const snap = await fs.getDocs(fs.collection(db, 'reviews')), rs = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+    pane().innerHTML = '<h2>Reviews</h2>' + (rs.map(r => `<div class="row"><div><span class="pill">${r.approved ? 'Showing' : 'Waiting'}</span> <strong>${esc(r.name)}</strong> ${'★'.repeat(r.rating)}</div><div>${esc(r.comment)}</div><div><button class="btn ghost dk small" data-a="${r.id}">${r.approved ? 'Hide' : 'Approve'}</button> <button class="btn red small" data-x="${r.id}">Delete</button></div></div>`).join('') || '<p class="empty">No reviews yet.</p>');
+    pane().querySelectorAll('[data-a]').forEach(b => b.onclick = async () => { const r = rs.find(x => x.id === b.dataset.a); await fs.updateDoc(fs.doc(db, 'reviews', r.id), { approved: !r.approved }); reviews(); });
+    pane().querySelectorAll('[data-x]').forEach(b => b.onclick = async () => { if (confirm('Delete this review permanently?')) { await fs.deleteDoc(fs.doc(db, 'reviews', b.dataset.x)); reviews(); } });
   }
   async function logos() {
     const ref = fs.doc(db, 'settings', 'logos'), g = await fs.getDoc(ref); let items = g.exists() ? g.data().items || [] : [];

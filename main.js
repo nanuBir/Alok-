@@ -1,5 +1,5 @@
 import { getFirebase } from './fb.js';
-const S = window.SITE, $ = (s, r = document) => r.querySelector(s);
+const S = window.SITE || { whatsapp: '918660581728', email: '', emailIsDemo: false, firebaseEnabled: false, emailjs: {} },  $ = (s, r = document) => r.querySelector(s);
 const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const EQUIP = [
@@ -24,23 +24,29 @@ $('#ind').innerHTML = IND.map(i => `<li><svg aria-hidden="true"><use href="#i-to
 $('#eqSel').insertAdjacentHTML('beforeend', EQUIP.map(e => `<option>${esc(e[0])}</option>`).join('') + '<option>Other</option>');
 $('#yr').textContent = new Date().getFullYear();
 
-// Contact links driven by config/site-config.js
+// Contact links driven by site-config.js
 const waLink = t => `https://wa.me/${S.whatsapp}?text=${encodeURIComponent(t)}`;
 document.querySelectorAll('[data-wa]').forEach(a => { a.href = waLink("Hello Alok, I'd like to enquire about a weighing scale service."); a.target = '_blank'; a.rel = 'noopener'; });
 document.querySelectorAll('[data-mail]').forEach(a => { a.href = 'mailto:' + S.email; if (a.tagName === 'A' && a.textContent.includes('@')) a.textContent = S.email; });
 $('#demoMail').hidden = !S.emailIsDemo;
+if (!S.email) document.querySelectorAll('[data-mail]').forEach(a => { a.hidden = true; });
 
 // Menu
 const burger = $('.burger'), menu = $('#menu');
 burger.onclick = () => { const o = menu.classList.toggle('open'); burger.setAttribute('aria-expanded', o); };
 menu.addEventListener('click', e => { if (e.target.closest('a')) { menu.classList.remove('open'); burger.setAttribute('aria-expanded', false); } });
 
-// PWA
+// PWA: service worker + automatic install prompt
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
-let deferred; const ib = $('#installBtn');
-addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; ib.hidden = false; });
-ib.onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; ib.hidden = true; };
-addEventListener('appinstalled', () => { ib.hidden = true; });
+let deferred; const ib = $('#installBtn'), bar = $('#installBar');
+const seen = () => { try { return localStorage.getItem('installX') === '1'; } catch { return false; } };
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; ib.hidden = false; if (!seen()) setTimeout(() => { bar.hidden = false; }, 2500); });
+const doInstall = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; ib.hidden = true; bar.hidden = true; };
+ib.onclick = doInstall; $('#installNow').onclick = doInstall;
+$('#installX').onclick = () => { bar.hidden = true; try { localStorage.setItem('installX', '1'); } catch { } };
+addEventListener('appinstalled', () => { ib.hidden = true; bar.hidden = true; });
+if (/iphone|ipad/i.test(navigator.userAgent) && !standalone && !seen()) { $('#installTxt').textContent = 'To install: tap Share, then “Add to Home Screen”.'; $('#installNow').hidden = true; setTimeout(() => { bar.hidden = false; }, 3000); }
 
 // Booking
 const form = $('#bookForm'), fbState = $('#fbState'), err = $('#formErr'), ok = $('#formOk'), btn = $('#submitBtn');
@@ -87,3 +93,19 @@ if (S.firebaseEnabled) getFirebase().then(async ({ fs, db }) => {
   const lg = await fs.getDoc(fs.doc(db, 'settings', 'logos')); const items = lg.exists() ? (lg.data().items || []) : [];
   if (items.length) $('#logos').innerHTML = items.filter(i => /^https:\/\//.test(i.url)).map(i => `<li><img loading="lazy" src="${esc(i.url)}" alt="${esc(i.name)}"></li>`).join('');
 }).catch(e => console.warn('Firebase content unavailable', e));
+
+// Reviews
+const rf = $('#revForm'), stars = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+rf.onsubmit = async e => {
+  e.preventDefault(); const f = rf, er = $('#revErr'), okk = $('#revOk'), name = f.rname.value.trim(), comment = f.rcomment.value.trim(), rating = +f.rrating.value;
+  okk.hidden = true; er.hidden = false;
+  if (name.length < 2 || comment.length < 5) { er.textContent = 'Please enter your name and a review of at least 5 characters.'; return; }
+  if (!S.firebaseEnabled) { er.textContent = 'Reviews are not switched on yet. Please tell Alok directly.'; return; }
+  try { const { fs, db } = await getFirebase(); await fs.addDoc(fs.collection(db, 'reviews'), { name, rating, comment, approved: false, createdAt: fs.serverTimestamp() }); f.reset(); er.hidden = true; okk.hidden = false; okk.textContent = 'Thank you! Your review will appear after Alok approves it.'; }
+  catch (x) { console.warn(x); er.textContent = 'Could not send the review. Please try again.'; }
+};
+if (S.firebaseEnabled) getFirebase().then(async ({ fs, db }) => {
+  const s = await fs.getDocs(fs.query(fs.collection(db, 'reviews'), fs.where('approved', '==', true)));
+  const rs = s.docs.map(d => d.data()).sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+  if (rs.length) $('#revList').innerHTML = rs.map(r => `<blockquote class="rev"><span class="st" aria-label="${r.rating} out of 5">${stars(r.rating)}</span><p>${esc(r.comment)}</p><strong>${esc(r.name)}</strong></blockquote>`).join('');
+}).catch(() => {});

@@ -1,0 +1,22 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null &&
+        firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+    }
+    // Customer photos: public can upload one small image, only admins can read.
+    match /bookingUploads/{bookingId}/{file} {
+      allow create: if request.resource.size < 5 * 1024 * 1024
+                    && request.resource.contentType.matches('image/(jpeg|png|webp)');
+      allow read, delete: if isAdmin();
+    }
+    // Public website images (project photos, logos): anyone reads, admin writes.
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && request.resource.size < 8 * 1024 * 1024
+                    && request.resource.contentType.matches('image/(jpeg|png|webp|svg\\+xml)');
+    }
+    match /{other=**} { allow read, write: if false; }
+  }
+}

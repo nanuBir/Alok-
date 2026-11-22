@@ -1,11 +1,11 @@
 // Bump VERSION when you change files, so visitors get the update.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'alok-' + VERSION;
 const SHELL = ['./','index.html','offline.html','404.html','manifest.webmanifest',
-  'assets/css/style.css','assets/js/main.js','config/site-config.js',
-  'assets/images/alok-hero.jpg','assets/icons/icon-192.png','assets/icons/icon-512.png'];
+  'style.css','main.js','site-config.js',
+  'alok-hero.jpg','icon-192.png','icon-512.png'];
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => Promise.all(SHELL.map(x => c.add(x).catch(() => {})))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('alok-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -13,7 +13,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
   // Only same-origin GETs. Firebase / EmailJS / admin pages are never cached (private data stays out).
-  if (r.method !== 'GET' || u.origin !== location.origin || u.pathname.includes('/admin/')) return;
+  if (r.method !== 'GET' || u.origin !== location.origin || /admin\.(html|js)$/.test(u.pathname)) return;
   if (r.mode === 'navigate') {
     e.respondWith(fetch(r).then(res => { const c = res.clone(); caches.open(CACHE).then(x => x.put(r, c)); return res; })
       .catch(() => caches.match(r).then(m => m || caches.match('offline.html'))));

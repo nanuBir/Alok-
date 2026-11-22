@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    function str(v, min, max) { return v is string && v.size() >= min && v.size() <= max; }
+    function validBooking(d) {
+      return d.keys().hasOnly(['name','phone','email','company','location','equipmentType','brand','model',
+                 'capacity','problem','preferredDate','preferredTime','photoPath','status','createdAt'])
+        && d.keys().hasAll(['name','phone','location','equipmentType','problem','status','createdAt'])
+        && str(d.name,2,80) && str(d.phone,7,20) && str(d.location,2,200)
+        && str(d.equipmentType,2,80) && str(d.problem,5,2000)
+        && (!('email' in d) || str(d.email,0,120))
+        && (!('company' in d) || str(d.company,0,120))
+        && (!('brand' in d) || str(d.brand,0,80))
+        && (!('model' in d) || str(d.model,0,80))
+        && (!('capacity' in d) || str(d.capacity,0,40))
+        && (!('preferredDate' in d) || str(d.preferredDate,0,10))
+        && (!('preferredTime' in d) || str(d.preferredTime,0,40))
+        && (!('photoPath' in d) || str(d.photoPath,0,200))
+        && d.status == 'New' && d.createdAt == request.time;
+    }
+    // Admin list: create a document here by hand (see FIREBASE-SETUP.md). Nobody can write it from the web.
+    match /admins/{uid} { allow read: if request.auth != null && request.auth.uid == uid; allow write: if false; }
+
+    match /bookings/{id} {
+      allow create: if validBooking(request.resource.data);
+      allow read, update, delete: if isAdmin();
+    }
+    match /projects/{id} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow write: if isAdmin();
+      match /private/{doc} { allow read, write: if isAdmin(); }
+    }
+    match /reviews/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name','rating','comment','approved','createdAt'])
+        && str(request.resource.data.name,2,60) && str(request.resource.data.comment,5,600)
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.approved == false && request.resource.data.createdAt == request.time;
+      allow read: if resource.data.approved == true || isAdmin();
+      allow update, delete: if isAdmin();
+    }
+    match /settings/{doc} { allow read: if true; allow write: if isAdmin(); }
+    match /{other=**} { allow read, write: if false; }
+  }
+}
