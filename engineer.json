@@ -1,0 +1,56 @@
+{
+  "engineer": {
+    "name": "Alok",
+    "role": "Field Service Engineer",
+    "availability": "Available for Service Bookings",
+    "bio": "Hands-on technical diagnostics, equipment setup, preventive maintenance, and on-site support. Book a service slot directly and connect via phone or WhatsApp.",
+    "phone": "",
+    "whatsapp": "",
+    "email": "",
+    "location": "On-Site & Local Service Area",
+    "portfolioUrl": "https://nanubir.github.io/Alok-/#reviews",
+    "heroImage": "hero.jpg"
+  },
+  "services": [
+    {
+      "id": "diag-01",
+      "name": "On-Site Technical Inspection & Diagnostics",
+      "rate": "Visit / Inspection",
+      "eta": "Same-day slot",
+      "description": "Complete root-cause fault finding, testing, and clear repair/replacement estimate."
+    },
+    {
+      "id": "inst-02",
+      "name": "Installation & System Setup",
+      "rate": "Service Quote",
+      "eta": "Scheduled slot",
+      "description": "Clean installation, configuration, calibration, and post-setup functionality check."
+    },
+    {
+      "id": "maint-03",
+      "name": "Preventive Maintenance & Servicing",
+      "rate": "Service Plan",
+      "eta": "Flexible timing",
+      "description": "Routine tuning, cleaning, wear checks, and performance optimization to prevent breakdowns."
+    },
+    {
+      "id": "repair-04",
+      "name": "Troubleshooting & Urgent Repair",
+      "rate": "Priority Support",
+      "eta": "Fast response",
+      "description": "Targeted fault resolution, component testing, and operational recovery."
+    }
+  ],
+  "reviews": [
+    {
+      "author": "Verified Client",
+      "rating": 5,
+      "comment": "Prompt response, clear explanation of the technical issue, and neat on-site work."
+    },
+    {
+      "author": "Local Customer",
+      "rating": 5,
+      "comment": "Dependable service support and straightforward booking process."
+    }
+  ]
+}

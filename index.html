@@ -1,66 +1,1030 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>Alok | Weighing Scale Expert & Technical Consultant</title>
-  <meta name="description" content="Technical service, calibration, installation and repair for precision, commercial and industrial weighing systems in Bengaluru and Udupi.">
-  <meta name="theme-color" content="#07152e"><meta name="color-scheme" content="light">
-  <meta property="og:title" content="Alok — Weighing Scale Expert"><meta property="og:description" content="Precision in every measurement. Confidence in every service."><meta property="og:type" content="website">
-  <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0d0e11" />
+  <title>Alok — Service Engineer Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-app: #0d0e11;
+      --bg-elevated: #15171c;
+      --bg-card: #1b1e24;
+      --bg-hover: #232730;
+      --bg-drawer: #121419;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --text-primary: #f3f4f6;
+      --text-secondary: #a1a7b3;
+      --text-muted: #6c7280;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.14);
+      --accent-hover: #2563eb;
+      --success: #10b981;
+      --whatsapp: #25d366;
+      --header-h: 58px;
+      --bottom-h: 64px;
+      --drawer-w: 288px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      background-color: var(--bg-app);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    /* Top Header */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: rgba(13, 14, 17, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      z-index: 40;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-subtle);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-btn {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 12.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .pill-btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .pill-btn.primary:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Left Side Panel / AI History Drawer */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 60;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .side-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: var(--drawer-w);
+      max-width: 84vw;
+      background: var(--bg-drawer);
+      border-right: 1px solid var(--border-subtle);
+      z-index: 70;
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 14px 12px;
+    }
+
+    .side-drawer.open {
+      transform: translateX(0);
+    }
+
+    .drawer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .drawer-top-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .new-session-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 13.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .new-session-btn:hover {
+      background: var(--bg-hover);
+    }
+
+    .drawer-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin: 16px 6px 8px;
+    }
+
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .history-item {
+      width: 100%;
+      text-align: left;
+      padding: 9px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .history-item:hover, .history-item.active {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-color: var(--border-subtle);
+    }
+
+    .history-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .drawer-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 10px;
+    }
+
+    .engineer-mini-card {
+      padding: 10px;
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .engineer-avatar-sm {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+
+    .engineer-meta-sm strong {
+      display: block;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    .engineer-meta-sm small {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+    }
+
+    /* Main Content */
+    .main-shell {
+      padding-top: calc(var(--header-h) + 14px);
+      padding-bottom: calc(var(--bottom-h) + 28px);
+      max-width: 780px;
+      margin: 0 auto;
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    .tab-view {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Card */
+    .hero-card {
+      background: linear-gradient(145deg, #1b1f27 0%, #14171d 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 600px) {
+      .hero-card {
+        grid-template-columns: 1.35fr 0.85fr;
+        align-items: center;
+        padding: 22px;
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #93c5fd;
+      background: var(--accent-soft);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .hero-sub {
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      margin-bottom: 14px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      height: 38px;
+      padding: 0 14px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      height: 38px;
+      padding: 0 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+    }
+
+    .hero-photo-wrap {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      background: linear-gradient(135deg, #222733, #171a21);
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      display: block;
+    }
+
+    .hero-photo-fallback {
+      font-family: var(--font-display);
+      font-size: 38px;
+      font-weight: 700;
+      color: #93c5fd;
+      display: none;
+    }
+
+    .hero-photo-tag {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      background: rgba(13, 14, 17, 0.84);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11.5px;
+      color: var(--text-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 22px 0 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 15.5px;
+      font-weight: 700;
+    }
+
+    .section-note {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* AI Response Card */
+    .stream-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+
+    .stream-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .stream-badge {
+      font-weight: 600;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stream-body {
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .stream-body p {
+      margin-bottom: 8px;
+    }
+
+    .stream-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 560px) {
+      .services-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .service-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: border-color 0.18s ease, transform 0.18s ease;
+    }
+
+    .service-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .service-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .service-name {
+      font-weight: 600;
+      font-size: 14.5px;
+      color: var(--text-primary);
+    }
+
+    .service-rate {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .service-desc {
+      font-size: 12.8px;
+      color: var(--text-secondary);
+    }
+
+    .service-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 6px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .service-eta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .book-mini-btn {
+      padding: 6px 11px;
+      border-radius: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      background: var(--accent-soft);
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .book-mini-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Booking Form */
+    .form-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 560px) {
+      .form-grid.two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .input, .select, .textarea {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .input:focus, .select:focus, .textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn-whatsapp {
+      height: 40px;
+      padding: 0 15px;
+      border-radius: var(--radius-sm);
+      border: none;
+      background: var(--whatsapp);
+      color: #08130c;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+    }
+
+    .booking-receipt {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-size: 13px;
+      display: none;
+    }
+
+    .booking-receipt.show {
+      display: block;
+    }
+
+    /* Reviews & Contact */
+    .review-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+      margin-bottom: 10px;
+    }
+
+    .review-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .review-author {
+      font-weight: 600;
+      font-size: 13.5px;
+    }
+
+    .review-stars {
+      color: #fbbf24;
+      font-size: 12.5px;
+      letter-spacing: 1px;
+    }
+
+    .review-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .contact-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contact-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 13.5px;
+    }
+
+    .contact-row:last-child {
+      border-bottom: none;
+    }
+
+    .muted-note {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-h);
+      background: rgba(13, 14, 17, 0.92);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      z-index: 40;
+    }
+
+    .nav-tab {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: color 0.18s ease;
+    }
+
+    .nav-tab.active {
+      color: var(--text-primary);
+    }
+
+    .nav-tab.active svg {
+      color: var(--accent);
+    }
+  </style>
 </head>
 <body>
-<div class="announcement"><span class="pulse"></span> Service enquiries welcome <span class="ann-sep">•</span> Bengaluru &amp; Udupi</div>
-<header class="site-header" id="top">
-  <a class="brand" href="#home" aria-label="Alok home"><span class="brand-mark">A<span>.</span></span><span class="brand-name">ALOK<small>WEIGHING SYSTEMS</small></span></a>
-  <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false"><i></i><i></i></button>
-  <nav class="main-nav" id="mainNav"><a href="#expertise">Expertise</a><a href="#services">Services</a><a href="#experience">Experience</a><a href="#fieldwork">Field work</a><a href="#contact">Contact</a><a class="nav-cta" href="#booking">Book a service <span>↗</span></a></nav>
-</header>
-<main id="home">
-  <section class="hero section-wrap">
-    <div class="hero-copy"><div class="eyebrow"><span class="eyebrow-line"></span> TECHNICAL EXPERTISE · FIELD SERVICE</div>
-      <h1>Precision is not<br>an option. <em>It's the<br>standard.</em></h1>
-      <p class="hero-lead">I'm <strong>Alok</strong>, a Weighing Scale Expert &amp; Technical Consultant helping businesses keep every measurement dependable — from 1 mg jewellery balances to heavy-duty industrial systems.</p>
-      <div class="hero-actions"><a class="button button-primary" href="#booking">Book a service <span>↗</span></a><a class="button button-quiet" href="https://wa.me/918660581728?text=Hello%20Alok%2C%20I%20need%20weighing%20scale%20service." target="_blank" rel="noopener"> <span class="wa-icon">◉</span> WhatsApp Alok</a></div>
-      <div class="hero-proof"><div class="proof-avatars"><span>A</span><span>01</span><span>mg</span></div><p><b>Hands-on technical experience</b><small>Precision · Diagnosis · Service</small></p></div>
+  <!-- Top Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button class="icon-btn" id="openDrawerBtn" aria-label="Open History & Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <div class="brand-title">
+        <span class="status-dot"></span>
+        <span id="headerTitle">Alok • Service Desk</span>
+      </div>
     </div>
-    <div class="hero-visual"><div class="hero-image-frame"><img src="alok-portrait.png" alt="Alok, weighing scale expert" fetchpriority="high"><div class="image-label"><span class="label-dot"></span><span>TECHNICAL CONSULTANT<small>PERSONAL PROFESSIONAL PORTFOLIO</small></span></div></div><div class="floating-note note-top"><span class="note-icon">⌖</span><span><b>1 mg → Ton capacity</b><small>A broad weighing range</small></span></div><div class="floating-note note-bottom"><span class="note-icon note-blue">✓</span><span><b>Quick response</b><small>For service enquiries</small></span></div><div class="hero-orbit"></div></div>
-    <div class="hero-bottom"><span>01 / TECHNICAL SERVICE</span><span>SCROLL TO EXPLORE <b>↓</b></span><span>BASED IN KARNATAKA, INDIA</span></div>
-  </section>
-  <section class="trust-strip"><div><strong>5–8</strong><span>Years of field experience</span></div><div><strong>1 mg</strong><span>Precision weighing range</span></div><div><strong>1 ton+</strong><span>Heavy-duty scale range</span></div><div><strong>2</strong><span>Core service locations</span></div></section>
-  <section class="section section-light" id="expertise"><div class="section-wrap"><div class="section-heading"><div><div class="eyebrow dark"><span class="eyebrow-line"></span> WHAT I WORK WITH</div><h2>One specialist.<br><em>Multiple weighing needs.</em></h2></div><p class="section-intro">Practical technical exposure across weighing equipment used in retail, jewellery, laboratories and industrial environments.</p></div>
-    <div class="expertise-grid">
-      <article class="expert-card expert-feature"><div class="card-index">01 / PRECISION</div><div class="equipment-art balance-art"><div class="balance-top"></div><div class="balance-screen">0.000</div><div class="balance-base"></div><span class="art-caption">01 mg</span></div><h3>Precision &amp; Analytical</h3><p>Jewellery, gold, precision and analytical balances — including 1 mg applications.</p><span class="card-arrow">↗</span></article>
-      <article class="expert-card"><div class="card-index">02 / COMMERCIAL</div><div class="equipment-art platform-art"><div class="platform-display">12.500</div><div class="platform-deck"></div><div class="platform-leg"></div></div><h3>Retail &amp; Commercial</h3><p>Tabletop, counter, shop and platform weighing scales.</p><span class="card-arrow">↗</span></article>
-      <article class="expert-card"><div class="card-index">03 / INDUSTRIAL</div><div class="equipment-art industrial-art"><div class="industrial-frame"></div><div class="industrial-platform"></div><div class="industrial-load"></div></div><h3>Industrial &amp; Heavy Duty</h3><p>Industrial platforms, ton-capacity scales and electronic weighbridges.</p><span class="card-arrow">↗</span></article>
-      <article class="expert-card"><div class="card-index">04 / COMPONENTS</div><div class="equipment-art component-art"><div class="component-box">LC</div><div class="component-lines"></div><div class="component-display">LOAD CELL</div></div><h3>Load Cells &amp; Indicators</h3><p>Load cells, indicators, crane scales and connected weighing components.</p><span class="card-arrow">↗</span></article>
+
+    <div class="header-actions">
+      <button class="pill-btn primary" id="quickBookHeaderBtn">
+        <span>Book Service</span>
+      </button>
     </div>
-    <div class="equipment-list"><span>ALSO WORKING WITH</span><p>Crane Scales <i>·</i> Electronic Weighbridges <i>·</i> Tabletop Scales <i>·</i> Platform Scales <i>·</i> Load Cells <i>·</i> Indicators</p></div>
-  </div></section>
-  <section class="section services-section" id="services"><div class="section-wrap"><div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> HOW I CAN HELP</div><h2>Technical care.<br><em>From diagnosis to dependable operation.</em></h2></div><p class="section-intro">A service-first approach focused on identifying the issue, explaining the solution and getting your weighing equipment working reliably.</p></div>
-    <div class="service-layout"><div class="service-list">
-      <article class="service-row"><span class="service-no">01</span><div><h3>Troubleshooting &amp; fault diagnosis</h3><p>Systematic inspection to identify weighing errors, unstable readings and equipment faults.</p></div><span class="service-symbol">⌕</span></article>
-      <article class="service-row"><span class="service-no">02</span><div><h3>Calibration &amp; accuracy adjustment</h3><p>Checking performance and adjusting equipment for dependable measurement results.</p></div><span class="service-symbol">◎</span></article>
-      <article class="service-row"><span class="service-no">03</span><div><h3>Installation &amp; commissioning</h3><p>Equipment installation, setup checks and commissioning support.</p></div><span class="service-symbol">⌁</span></article>
-      <article class="service-row"><span class="service-no">04</span><div><h3>Preventive maintenance &amp; AMC</h3><p>Planned maintenance support to help reduce unexpected equipment downtime.</p></div><span class="service-symbol">↻</span></article>
-      <article class="service-row"><span class="service-no">05</span><div><h3>Electronic &amp; component repair</h3><p>PCB, display, keypad, power supply, wiring, sensor and component-level troubleshooting.</p></div><span class="service-symbol">⌘</span></article>
-      <article class="service-row"><span class="service-no">06</span><div><h3>Load cell &amp; software support</h3><p>Load cell testing and replacement, indicator configuration and software / firmware setup.</p></div><span class="service-symbol">⌗</span></article>
-      <article class="service-row"><span class="service-no">07</span><div><h3>On-site breakdown service</h3><p>On-site support for weighing equipment breakdowns, subject to location and availability.</p></div><span class="service-symbol">↗</span></article>
-    </div><aside class="service-aside"><div class="aside-kicker">THE SERVICE APPROACH</div><div class="aside-number">01<span>—</span>04</div><h3>Understand.<br>Diagnose.<br>Resolve.<br><em>Verify.</em></h3><p>Good service is more than replacing a part. It is about understanding the actual problem and checking the result.</p><a href="#booking" class="text-link">Discuss your requirement <span>↗</span></a><div class="aside-grid-lines"></div></aside></div>
-  </div></section>
-  <section class="section experience-section" id="experience"><div class="section-wrap experience-grid"><div><div class="eyebrow"><span class="eyebrow-line"></span> PROFESSIONAL BACKGROUND</div><h2>Built around<br><em>real field work.</em></h2><p class="experience-copy">Technical service requires patience, observation and a clear understanding of how equipment behaves in real working conditions. My work is centred on practical diagnosis, equipment care and customer support.</p><a class="button button-outline" href="#contact">Connect with Alok <span>↗</span></a></div><div class="experience-panel"><div class="timeline-line"></div><div class="timeline-item"><span class="timeline-dot"></span><small>CURRENT PROFESSIONAL ROLE</small><h3>Contech Scale Company</h3><p>Currently employed, with hands-on exposure to weighing scale service and technical support.</p></div><div class="timeline-item"><span class="timeline-dot"></span><small>FIELD EXPERIENCE</small><h3>5–8 years</h3><p>Practical experience across weighing equipment, troubleshooting and customer-facing service work.</p></div><div class="experience-note">This is a personal professional portfolio and is not the official website of Contech Scale Company.</div></div></div></section>
-  <section class="industries-band"><div class="section-wrap"><div class="eyebrow"><span class="eyebrow-line"></span> WORK ENVIRONMENTS</div><h2>Supporting the places where <em>accuracy matters.</em></h2><div class="industry-items"><span>Jewellery showrooms</span><span>Gold manufacturing</span><span>Pharmaceutical</span><span>Manufacturing</span><span>Retail chains</span><span>Laboratories</span><span>Logistics</span></div></div></section>
-  <section class="section field-section" id="fieldwork"><div class="section-wrap"><div class="section-heading"><div><div class="eyebrow dark"><span class="eyebrow-line"></span> ON-SITE EXPERIENCE</div><h2>Recent field work.<br><em>Documented with care.</em></h2></div><p class="section-intro">Selected service projects will appear here as they are added and approved. Customer details remain private unless permission is given.</p></div><div class="empty-project"><div class="empty-project-icon">＋</div><div><b>Project gallery is being prepared</b><p>Verified service visits and equipment work will be published here. No sample clients or invented projects are displayed.</p></div><a href="#booking" class="text-link">Enquire about a service <span>↗</span></a></div></div></section>
-  <section class="section booking-section" id="booking"><div class="section-wrap booking-grid"><div class="booking-copy"><div class="eyebrow"><span class="eyebrow-line"></span> LET'S GET IT WEIGHING RIGHT</div><h2>Tell me what's<br><em>not working.</em></h2><p>Share a few details about your weighing equipment. I'll review your enquiry and respond as soon as possible.</p><div class="booking-points"><span><b>01</b> Share the equipment details</span><span><b>02</b> Explain the issue</span><span><b>03</b> Get a response from Alok</span></div><div class="booking-direct"><small>PREFER TO TALK?</small><a href="tel:+918660581728">+91 86605 81728 <span>↗</span></a></div></div>
-    <form class="booking-form" id="bookingForm"><div class="form-top"><div><small>SERVICE ENQUIRY</small><h3>Book a service</h3></div><span class="form-step">01 / 01</span></div><div class="form-grid"><label>Your name *<input name="name" required autocomplete="name" placeholder="Full name"></label><label>Phone number *<input name="phone" required inputmode="tel" autocomplete="tel" placeholder="Your contact number"></label><label class="full">Company / business<input name="company" placeholder="Company name (optional)"></label><label>Service location *<input name="location" required placeholder="City / area"></label><label>Equipment type *<select name="equipment" required><option value="">Select equipment</option><option>Jewellery / Gold Scale</option><option>Precision / Analytical Balance</option><option>Retail / Commercial Scale</option><option>Platform / Industrial Scale</option><option>Crane Scale</option><option>Weighbridge</option><option>Load Cell / Indicator</option><option>Other</option></select></label><label>Brand / model<input name="model" placeholder="Brand or model (if known)"></label><label>Preferred date<input name="date" type="date"></label><label class="full">Describe the issue *<textarea name="issue" required rows="4" placeholder="What is happening with the machine?"></textarea></label></div><label class="consent"><input type="checkbox" required> I agree that Alok may contact me about this service enquiry.</label><button class="button button-primary form-submit" type="submit">Send service enquiry <span>↗</span></button><p class="form-note">Your enquiry will open in WhatsApp with the details filled in. You can review and send it there.</p><div class="form-status" id="formStatus" role="status" aria-live="polite"></div></form>
-  </div></section>
-  <section class="contact-section" id="contact"><div class="section-wrap contact-grid"><div><div class="eyebrow"><span class="eyebrow-line"></span> START A CONVERSATION</div><h2>When accuracy<br><em>can't wait.</em></h2><p>For weighing scale service enquiries, technical support and service discussions.</p></div><div class="contact-card"><div class="contact-line"><span>WHATSAPP / PHONE</span><a href="https://wa.me/918660581728" target="_blank" rel="noopener">+91 86605 81728 ↗</a></div><div class="contact-line"><span>SERVICE COVERAGE</span><b>Bengaluru &amp; Udupi, Karnataka</b><small>Travel available on request</small></div><div class="contact-line"><span>RESPONSE</span><b>Quick response to service enquiries</b></div><a class="button button-primary contact-button" href="https://wa.me/918660581728?text=Hello%20Alok%2C%20I%20have%20a%20service%20enquiry." target="_blank" rel="noopener">Message on WhatsApp <span>↗</span></a></div></div></section>
-  <section class="initiative section-wrap"><div class="initiative-mark">N</div><div><small>BEYOND THE WORKBENCH</small><h3>Curiosity builds things.</h3><p>Nanu Cart — a separate digital initiative exploring products, services and online experiences.</p></div><a href="https://bir001.github.io/Nanu-Cart/" target="_blank" rel="noopener" class="text-link">Explore Nanu Cart <span>↗</span></a></section>
-</main>
-<footer class="site-footer"><div class="section-wrap"><div class="footer-top"><a class="brand footer-brand" href="#home"><span class="brand-mark">A<span>.</span></span><span class="brand-name">ALOK<small>WEIGHING SYSTEMS</small></span></a><p>Precision in every measurement.<br>Confidence in every service.</p><a class="back-top" href="#top">BACK TO TOP ↑</a></div><div class="footer-bottom"><span>© <span id="year"></span> Alok. Personal professional portfolio.</span><span>Not the official website of Contech Scale Company.</span><span><a href="admin.html">Admin ↗</a></span></div></div></footer>
-<div class="mobile-quickbar"><a href="tel:+918660581728">Call</a><a href="https://wa.me/918660581728" target="_blank" rel="noopener">WhatsApp</a><a href="#booking">Book service</a></div>
-<button class="install-fab" id="installButton" hidden>Install app <span>↓</span></button>
-<script type="module" src="app.js"></script>
-</body></html>
+  </header>
+
+  <!-- Backdrop -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <!-- Left Side Panel (AI History Style) -->
+  <aside class="side-drawer" id="sideDrawer" aria-label="Session History & Navigation">
+    <div class="drawer-top">
+      <span class="drawer-top-title">Service Sessions</span>
+      <button class="icon-btn" id="closeDrawerBtn" aria-label="Close Panel">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <button class="new-session-btn" id="newBookingSessionBtn">
+      <span>+ New Service Request</span>
+      <span style="color: var(--text-muted);">→</span>
+    </button>
+
+    <div class="drawer-section-label">Recent Activity & History</div>
+    <div class="history-list" id="historyList"></div>
+
+    <div class="drawer-footer">
+      <div class="engineer-mini-card">
+        <img src="hero.jpg" alt="Alok" class="engineer-avatar-sm" onerror="this.style.display='none'" />
+        <div class="engineer-meta-sm">
+          <strong id="drawerEngineerName">Alok</strong>
+          <small id="drawerEngineerRole">Field Service Engineer</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-shell">
+    <!-- TAB 1: HOME -->
+    <section class="tab-view active" id="tab-home">
+      <div class="hero-card">
+        <div>
+          <div class="hero-badge">
+            <span>●</span>
+            <span id="heroAvailability">Available for Service Bookings</span>
+          </div>
+          <h1 class="hero-title" id="heroName">Alok — Field Service Engineer</h1>
+          <p class="hero-sub" id="heroBio">
+            Reliable technical diagnostics, installation, maintenance, and on-site troubleshooting. Request a service slot anytime and confirm directly.
+          </p>
+          <div class="hero-cta-row">
+            <button class="btn-primary" id="heroBookBtn">Book a Service</button>
+            <button class="btn-secondary" id="heroServicesBtn">Explore Services</button>
+          </div>
+        </div>
+
+        <div class="hero-photo-wrap">
+          <img src="hero.jpg" alt="Alok Hero Portrait" onerror="this.style.display='none'; document.getElementById('heroFallback').style.display='block';" />
+          <div class="hero-photo-fallback" id="heroFallback">ALOK</div>
+          <div class="hero-photo-tag">
+            <span><strong>Alok</strong> • Service Engineer</span>
+            <span style="color: #6ee7b7;">Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">Engineer Brief & Response</h2>
+        <span class="section-note" id="syncStatus">Live JSON Ready</span>
+      </div>
+
+      <div class="stream-card">
+        <div class="stream-head">
+          <span class="stream-badge">
+            <span>⚡</span>
+            <span>Alok Service Assistant</span>
+          </span>
+          <span>Overview</span>
+        </div>
+        <div class="stream-body">
+          <p>Welcome to <strong>Alok's Service Engineer</strong> workspace. Browse available technical services, check client reviews, or submit a service booking request with your preferred date and issue details.</p>
+          <p class="muted-note">Tip: Edit <code>engineer.json</code> in this same folder to update phone/WhatsApp number, service rates, and reviews anytime.</p>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">Popular Services</h2>
+        <span class="section-note">Tap Book to pre-fill</span>
+      </div>
+      <div class="services-grid" id="homeServicesGrid"></div>
+    </section>
+
+    <!-- TAB 2: SERVICES -->
+    <section class="tab-view" id="tab-services">
+      <div class="section-header" style="margin-top: 4px;">
+        <h2 class="section-title">All Technical Services</h2>
+        <span class="section-note">Direct Booking Enabled</span>
+      </div>
+      <div class="services-grid" id="allServicesGrid"></div>
+    </section>
+
+    <!-- TAB 3: BOOKING -->
+    <section class="tab-view" id="tab-book">
+      <div class="section-header" style="margin-top: 4px;">
+        <h2 class="section-title">Book a Service Slot</h2>
+        <span class="section-note">Instant Request & History Log</span>
+      </div>
+
+      <form class="form-card" id="bookingForm">
+        <div class="form-grid two-col">
+          <div class="field-group">
+            <label class="field-label" for="clientName">Your Name *</label>
+            <input class="input" id="clientName" type="text" placeholder="Enter your full name" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="clientPhone">Your Phone / WhatsApp *</label>
+            <input class="input" id="clientPhone" type="tel" placeholder="+91 XXXXX XXXXX" required />
+          </div>
+        </div>
+
+        <div class="form-grid two-col" style="margin-top: 12px;">
+          <div class="field-group">
+            <label class="field-label" for="serviceSelect">Select Service *</label>
+            <select class="select" id="serviceSelect" required></select>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="preferredDate">Preferred Date & Time</label>
+            <input class="input" id="preferredDate" type="datetime-local" />
+          </div>
+        </div>
+
+        <div class="field-group" style="margin-top: 12px;">
+          <label class="field-label" for="clientLocation">Service Location / Address</label>
+          <input class="input" id="clientLocation" type="text" placeholder="Area, landmark, or city" />
+        </div>
+
+        <div class="field-group" style="margin-top: 12px;">
+          <label class="field-label" for="issueDetails">Issue / Requirement Details</label>
+          <textarea class="textarea" id="issueDetails" placeholder="Describe what needs inspection, installation, or repair..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save Booking Request</button>
+          <button type="button" class="btn-whatsapp" id="sendWhatsAppBtn">Send via WhatsApp</button>
+        </div>
+
+        <div class="booking-receipt" id="bookingReceipt"></div>
+      </form>
+    </section>
+
+    <!-- TAB 4: REVIEWS & CONTACT -->
+    <section class="tab-view" id="tab-reviews">
+      <div class="section-header" style="margin-top: 4px;">
+        <h2 class="section-title">Client Reviews</h2>
+        <span class="section-note" id="ratingSummary">★ 5.0 / 5.0</span>
+      </div>
+      <div id="reviewsContainer"></div>
+
+      <div class="section-header">
+        <h2 class="section-title">Direct Contact & Links</h2>
+        <span class="section-note">Configured in engineer.json</span>
+      </div>
+      <div class="contact-box" id="contactContainer"></div>
+    </section>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav" aria-label="Primary Navigation">
+    <button class="nav-tab active" data-tab="tab-home" data-title="Alok • Service Desk">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <span>Home</span>
+    </button>
+
+    <button class="nav-tab" data-tab="tab-services" data-title="Services • Alok">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      <span>Services</span>
+    </button>
+
+    <button class="nav-tab" data-tab="tab-book" data-title="Book Service • Alok">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      <span>Book</span>
+    </button>
+
+    <button class="nav-tab" data-tab="tab-reviews" data-title="Reviews & Contact • Alok">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <span>Reviews</span>
+    </button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
